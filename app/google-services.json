@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1074184741435",
+    "firebase_url": "https://councilapp-512ad-default-rtdb.firebaseio.com",
+    "project_id": "councilapp-512ad",
+    "storage_bucket": "councilapp-512ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074184741435:android:570a6c363274efd8b8321e",
+        "android_client_info": {
+          "package_name": "com.example.councilapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074184741435-v8ak0i85nn46cqo5a5p8v3fnsvftnpdf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.councilapp",
+            "certificate_hash": "264c90ac8da3f7e5c00c980e0dd86d022cb55d2b"
+          }
+        },
+        {
+          "client_id": "1074184741435-c4f1i8ehlk5mt5nd38s982kt5bjdplct.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC9XKTS3WIdCdWXu5WO1nVMjT9L6b29gw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1074184741435-c4f1i8ehlk5mt5nd38s982kt5bjdplct.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
