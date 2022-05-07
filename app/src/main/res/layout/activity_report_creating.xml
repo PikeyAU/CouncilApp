@@ -20,37 +20,38 @@
         app:srcCompat="@drawable/logo" />
 
     <Button
-        android:id="@+id/submitButton"
+        android:id="@+id/btn_submit"
         android:layout_width="124dp"
         android:layout_height="48dp"
         android:layout_marginTop="22dp"
         android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
-        app:layout_constraintHorizontal_bias="0.532"
+        app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
+        app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/notes"
-        app:layout_constraintVertical_bias="0.32"
+        app:layout_constraintVertical_bias="0.741"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <Button
-        android:id="@+id/cancelButton"
+        android:id="@+id/btn_cancel"
         android:layout_width="124dp"
         android:layout_height="48dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="56dp"
+        android:layout_marginEnd="60dp"
         android:layout_marginBottom="16dp"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notes" />
+        app:layout_constraintTop_toBottomOf="@+id/notes"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/Username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="109dp"
-        android:text="@string/user"
+        android:text="@string/username"
         app:layout_constraintBottom_toTopOf="@+id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -132,30 +133,31 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/image"
-        android:layout_width="360dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:inputType="textPersonName|text"
-        android:text="@string/image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/type"
-        android:autofillHints="" />
-
-    <EditText
         android:id="@+id/notes"
         android:layout_width="360dp"
         android:layout_height="48dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:autofillHints=""
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/notes"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image" />
+        app:layout_constraintTop_toBottomOf="@+id/type" />
+
+    <Button
+        android:id="@+id/btn_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#F4F4F4"
+        android:text="@string/upload_image"
+        android:textColor="#050505"
+        app:layout_constraintBottom_toTopOf="@+id/btn_submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notes"
+        app:layout_constraintVertical_bias="0.875"
+        app:rippleColor="#FBFBFB" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

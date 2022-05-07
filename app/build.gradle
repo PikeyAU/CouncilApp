@@ -62,4 +62,6 @@ dependencies {
 
     // Moshi
     implementation "com.squareup.moshi:moshi-kotlin:1.9.3"
+
+    implementation 'com.github.Drjacky:ImagePicker:$libVersion:2.1.15'
 }
