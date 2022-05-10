@@ -2,18 +2,14 @@ package com.example.councilapp.repository
 
 import android.util.Log
 import com.example.councilapp.model.Admin
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.tasks.await
-import java.lang.Exception
 
 private const val TAG = "AdminsRepository"
 
 class AdminsRepository {
-    private val db = Firebase.firestore
-    private val adminsCollection = db.collection("admins")
+    private val adminsCollection = Firebase.firestore.collection("admins")
     private var admins = mutableListOf<Admin>()
 
     init {
@@ -22,6 +18,7 @@ class AdminsRepository {
         val auth = Firebase.auth
         auth.signInAnonymously().addOnSuccessListener {
             addAdmin(firstName = "Tim", lastName = "Baker", uid = auth.currentUser!!.uid)
+        }.addOnCompleteListener {
             auth.currentUser!!.delete()
         }
         getAllAdmins {
@@ -32,7 +29,14 @@ class AdminsRepository {
     /**
      * @param[uid] should be a FirebaseUser uid.
      */
-    fun addAdmin(uid: String, firstName: String, lastName: String) {
+    private fun addAdmin(
+        uid: String,
+        firstName: String,
+        lastName: String,
+        failFun: (Exception) -> Any = {},
+        doneFun: () -> Any = {},
+        successFun: () -> Any = {},
+    ) {
         val newAdmin = hashMapOf(
             "firstName" to firstName,
             "lastName" to lastName,
@@ -40,23 +44,24 @@ class AdminsRepository {
         adminsCollection.document(uid)
             .set(newAdmin)
             .addOnSuccessListener {
-                Log.v(TAG, "================= addAdmin: successful =================")
-                Log.v(TAG, "New admin $uid: $firstName $lastName was added successfully.")
+                successFun()
             }
             .addOnFailureListener {
                 Log.e(TAG, "================= addAdmin: failed =================")
-                Log.e(TAG, "Error adding new admin: $it")
+                Log.e(TAG, "Error adding new admin:$it")
+                failFun(it)
+            }
+            .addOnCompleteListener {
+                doneFun()
             }
     }
 
-    fun getAdmin(
+    private fun getAdmin(
         uid: String,
-        wipFun: () -> Any = {},
-        failFun: (Exception) -> Any = {println(it)},
+        failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: (Admin) -> Any,
     ) {
-        wipFun()
         adminsCollection.document(uid)
             .get()
             .addOnSuccessListener {
@@ -67,6 +72,8 @@ class AdminsRepository {
                 ))
             }
             .addOnFailureListener {
+                Log.e(TAG, "================= getAdmin: failed =================")
+                Log.e(TAG, "Error getting admin:$it")
                 failFun(it)
             }
             .addOnCompleteListener {
@@ -74,13 +81,11 @@ class AdminsRepository {
             }
     }
 
-    fun getAllAdmins(
-        wipFun: () -> Any = {},
-        failFun: (Exception) -> Any = {println(it)},
+    private fun getAllAdmins(
+        failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: (List<Admin>) -> Any,
     ) {
-        wipFun()
         adminsCollection.get()
             .addOnSuccessListener {
                 for (document in it) {
@@ -92,22 +97,32 @@ class AdminsRepository {
                 }
                 successFun(admins)
             }.addOnFailureListener {
+                Log.e(TAG, "================= getAllAdmins: failed =================")
+                Log.e(TAG, "Error getting all admins:$it")
                 failFun(it)
             }.addOnCompleteListener {
                 doneFun()
             }
     }
 
-    fun deleteAdmin(uid: String) {
+    private fun deleteAdmin(
+        uid: String,
+        failFun: (Exception) -> Any = {},
+        doneFun: () -> Any = {},
+        successFun: () -> Any = {},
+    ) {
         adminsCollection.document(uid)
             .delete()
             .addOnSuccessListener {
-                Log.v(TAG, "================= deleteAdmin: successful =================")
-                Log.v(TAG, "Admin $uid was deleted successfully.")
+                successFun()
             }
             .addOnFailureListener {
                 Log.e(TAG, "================= deleteAdmin: failed =================")
                 Log.e(TAG, "Error deleting admin: $it")
+                failFun(it)
+            }
+            .addOnCompleteListener {
+                doneFun()
             }
     }
 }
