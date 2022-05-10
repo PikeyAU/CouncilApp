@@ -8,12 +8,17 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.example.councilapp.repository.AdminsRepository
+import com.example.councilapp.repository.PhotosRepository
+import com.example.councilapp.repository.ReportsRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 
 class LoginActivity : AppCompatActivity() {
-
+    private val photosRepository = PhotosRepository()
+    private val adminsRepository = AdminsRepository()
+    private val reportsRepository = ReportsRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +28,6 @@ class LoginActivity : AppCompatActivity() {
         val loginBtn = findViewById<Button>(R.id.loginBtn)
         val email = findViewById<EditText>(R.id.loginEmail)
         val password = findViewById<EditText>(R.id.loginPassword)
-
 
         register_tv.setOnClickListener{
 
