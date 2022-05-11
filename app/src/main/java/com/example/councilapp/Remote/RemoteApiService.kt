@@ -1,4 +1,4 @@
-package com.example.councilapp.network
+package com.example.councilapp.Remote
 
 import com.example.councilapp.model.Photo
 import com.squareup.moshi.Moshi
@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
-// TODO: Complete base url.
+
 private const val BASE_URL = "https://"
 
 /**
@@ -28,16 +28,21 @@ private val retrofit = Retrofit.Builder()
 /**
  * A public interface that exposes the [getPhotos] method
  */
-interface PhotoService {
+interface RemoteApiService {
+    /**
+     * Returns a [List] of [Photo] and this method can be called from a Coroutine.
+     * The @GET annotation indicates that the "photos" endpoint will be requested with the GET
+     * HTTP method
+     */
     @GET("photos")
     suspend fun getPhotos(): List<Photo>
+
 }
 
 /**
  * A public Api object that exposes the lazy-initialised Retrofit service
  */
-object PhotoNetwork {
-    val retrofitService: PhotoService by lazy {
-        retrofit.create(PhotoService::class.java)
-    }
+object RemoteApi {
+    val retrofitService : RemoteApiService by lazy {
+        retrofit.create(RemoteApiService::class.java) }
 }
