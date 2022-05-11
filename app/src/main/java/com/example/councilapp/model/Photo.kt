@@ -1,7 +1,7 @@
 package com.example.councilapp.model
 
+import com.squareup.moshi.Json
+
 data class Photo (
-     val id: String,
-     val fileName: String,
-     val url: String
+    @Json(name = "_id") val id: String
 )
