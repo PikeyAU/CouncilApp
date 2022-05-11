@@ -49,6 +49,14 @@ class RegisterActivity : AppCompatActivity() {
                         "Please Confirm Password.",
                         Toast.LENGTH_SHORT
                     ).show()
+
+                    if (password.text.toString() != confirmPassword.text.toString()) {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Password does not match",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
                 }
 
                 TextUtils.isEmpty(username.text.toString().trim { it <= ' '}) -> {
@@ -92,6 +100,10 @@ class RegisterActivity : AppCompatActivity() {
 
             }
             }
+
+            
+            
+            startActivity(Intent(this@RegisterActivity, RegisterActivity2::class.java))
 
         }
 
