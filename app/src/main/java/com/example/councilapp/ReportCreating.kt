@@ -12,8 +12,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import android.provider.MediaStore
 
 class ReportCreating : AppCompatActivity() {
+    lateinit var button: Button
+    private val pickImage = 100
+    private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +39,7 @@ class ReportCreating : AppCompatActivity() {
         val note =  findViewById<EditText>(R.id.notes)
         val btnSubmit = findViewById<Button>(R.id.btn_submit)
         val btnCancel = findViewById<Button>(R.id.btn_cancel)
+
 
         btnSubmit.setOnClickListener {
             when {
@@ -75,7 +80,8 @@ class ReportCreating : AppCompatActivity() {
         }
 
         btnImage.setOnClickListener {
-
+            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(gallery, pickImage)
         }
 
         btnCancel.setOnClickListener{
