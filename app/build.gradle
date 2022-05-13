@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -63,5 +64,6 @@ dependencies {
     // Moshi
     implementation "com.squareup.moshi:moshi-kotlin:1.9.3"
 
-    implementation 'com.github.Drjacky:ImagePicker:$libVersion:2.1.15'
+    // Dependency to include Maps SDK for Android
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 }

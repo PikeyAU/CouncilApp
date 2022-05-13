@@ -34,4 +34,9 @@
     <string name="username">username</string>
     <string name="images">Image:</string>
     <string name="upload_image">Upload image</string>
+    <string name="situation">Situation</string>
+    <string name="feedback">Feedback</string>
+    <string name="time">Time</string>
+    <string name="location">Location</string>
+    <string name="track_your_reports">Track your reports</string>
 </resources>

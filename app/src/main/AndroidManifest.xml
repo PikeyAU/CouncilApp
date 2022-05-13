@@ -10,13 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CouncilApp">
         <activity
-            android:name=".ReportCreatingActivity"
+            android:name=".ReportTracking"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAPS_API_KEY}" />
+
+        <activity
+            android:name=".ReportCreating"
             android:exported="false"
             android:label="@string/title_activity_report_creating"
             android:theme="@style/Theme.CouncilApp.NoActionBar" />
         <activity
             android:name=".RegisterActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -28,7 +36,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

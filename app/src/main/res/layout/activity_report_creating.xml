@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".ReportCreating">
 
     <ImageView
         android:id="@+id/logo"
@@ -63,61 +63,48 @@
         android:id="@+id/title"
         android:layout_width="356dp"
         android:layout_height="32dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="4dp"
         android:text="@string/council_assets_reporting_form"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/reporterName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.436"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Username" />
 
-    <EditText
-        android:id="@+id/reporterAddress"
-        android:layout_width="360dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/address"
-        android:inputType="textPostalAddress"
-        android:text="@string/address"
+    <FrameLayout
+        android:layout_width="410dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="38dp"
+        app:layout_constraintBottom_toTopOf="@+id/reportLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reporterName" />
+        app:layout_constraintTop_toTopOf="@+id/title"
+        app:layout_constraintVertical_bias="0.0"
+        tools:context=".ReportCreating">
 
-    <EditText
-        android:id="@+id/reporterName"
-        android:layout_width="360dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="4dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/name"
-        app:layout_constraintBottom_toTopOf="@+id/reporterAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.733"
-        android:autofillHints="" />
+        <fragment
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/map_fragment"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="119dp" />
+    </FrameLayout>
 
     <EditText
         android:id="@+id/reportLocation"
         android:layout_width="360dp"
         android:layout_height="48dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="172dp"
+        android:autofillHints=""
         android:ems="10"
         android:inputType="textPostalAddress"
         android:text="@string/location_of_report"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reporterAddress"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/Username" />
 
     <EditText
         android:id="@+id/type"

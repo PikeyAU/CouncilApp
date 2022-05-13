@@ -1,23 +1,34 @@
 package com.example.councilapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.TextUtils
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import java.lang.Override as Override
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.*
 
 class ReportCreating : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report_creating)
 
-        val reporterName = findViewById<EditText>(R.id.reporterName)
-        val reporterAddress = findViewById<EditText>(R.id.reporterAddress)
+        val mapFragment =
+            supportFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
+        mapFragment?.getMapAsync { googleMap ->
+            // Ensure all places are visible in the map
+            googleMap.setOnMapLoadedCallback {
+                val bounds = LatLngBounds.builder()
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 20))
+            }
+        }
+
         val reportLocation = findViewById<EditText>(R.id.reportLocation)
         val assetType = findViewById<EditText>(R.id.type)
         val btnImage = findViewById<Button>(R.id.btn_image)
@@ -27,22 +38,6 @@ class ReportCreating : AppCompatActivity() {
 
         btnSubmit.setOnClickListener {
             when {
-                TextUtils.isEmpty(reporterName.text.toString().trim { it <= ' '}) -> {
-                    Toast.makeText(
-                        this@ReportCreating,
-                        "Please enter your name here",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-
-                TextUtils.isEmpty(reporterAddress.text.toString().trim { it <= ' '}) -> {
-                    Toast.makeText(
-                        this@ReportCreating,
-                        "Please enter your address here",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-
                 TextUtils.isEmpty(reportLocation.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@ReportCreating,
@@ -72,7 +67,7 @@ class ReportCreating : AppCompatActivity() {
 
                 Toast.makeText(
                     this@ReportCreating,
-                    "You Have Been Successfully Registered",
+                    "Report Has Been Successfully Added",
                     Toast.LENGTH_LONG
                 ).show()
                 }
@@ -80,7 +75,7 @@ class ReportCreating : AppCompatActivity() {
         }
 
         btnImage.setOnClickListener {
-            //
+
         }
 
         btnCancel.setOnClickListener{
