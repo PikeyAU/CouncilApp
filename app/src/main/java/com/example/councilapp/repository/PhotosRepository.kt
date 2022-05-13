@@ -62,13 +62,15 @@ class PhotosRepository() {
             }
     }
 
-    private fun addPhoto(
+    fun addPhoto(
         reportRef: String,
         filePath: String,
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: () -> Any = {},
     ) {
+        wipFun()
         val photoFile = File(filePath)
         // Determine file type extension.
         val photoExtension = photoFile.extension
@@ -86,13 +88,11 @@ class PhotosRepository() {
                 failFun,
                 doneFun,
             ) { url ->
-                photoDocument.set(
-                    hashMapOf(
-                        "id" to photoId,
+                photoDocument
+                    .set(hashMapOf(
                         "fileName" to photoFileName,
                         "url" to url.toString()
-                    )
-                )
+                    ))
                     .addOnSuccessListener { successFun() }
                     .addOnFailureListener {
                         Log.e(TAG, "================= addPhoto: failed =================")
@@ -117,13 +117,11 @@ class PhotosRepository() {
                         doneFun()
                     },
                 ) { url ->
-                    photoDocument.set(
-                        hashMapOf(
-                            "id" to photoId,
+                    photoDocument
+                        .set(hashMapOf(
                             "fileName" to photoFileName,
                             "url" to url.toString()
-                        )
-                    )
+                        ))
                         .addOnSuccessListener { successFun() }
                         .addOnFailureListener {
                             Log.e(TAG, "================= addPhoto: failed =================")
@@ -139,12 +137,14 @@ class PhotosRepository() {
         }
     }
 
-    private fun getReportPhotos(
+    fun getReportPhotos(
         reportRef: String,
+        wipFun: () -> Any,
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: (List<Photo>) -> Any,
     ) {
+        wipFun();
         reportsCollection.document(reportRef).collection("photos")
             .get()
             .addOnSuccessListener {
@@ -163,41 +163,66 @@ class PhotosRepository() {
             }.addOnCompleteListener { doneFun() }
     }
 
-    private fun deletePhoto (
-        photoFileName: String,
+    fun deletePhoto (
+        reportRef: String,
+        photo: Photo,
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: () -> Any = {},
     ) {
-        if(Firebase.auth.currentUser != null){
-            photoStorage.child(photoFileName)
-                .delete()
-                .addOnSuccessListener { successFun() }
-                .addOnFailureListener {
-                    Log.e(TAG, "================= deletePhoto: Failure =================")
-                    Log.e(TAG, "Error deleting photo: $it")
-                    failFun(it)
+        wipFun()
+        val photosCollection = reportsCollection.document(reportRef).collection("photos")
+        photosCollection.document(photo.id)
+            .delete()
+            .addOnSuccessListener {
+                if(Firebase.auth.currentUser != null){
+                    photoStorage.child(photo.fileName)
+                        .delete()
+                        .addOnSuccessListener { successFun() }
+                        .addOnFailureListener {
+                            photosCollection.document(photo.id).set(hashMapOf(
+                                "fileName" to photo.fileName,
+                                "url" to photo.url,
+                            ))
+                            Log.e(TAG, "================= deletePhoto: Failure =================")
+                            Log.e(TAG, "Error deleting photo: $it")
+                            failFun(it)
+                        }
+                        .addOnCompleteListener { doneFun() }
                 }
-                .addOnCompleteListener { doneFun() }
-        }
-        else {
-            authenticateAnonymously({
-                failFun(it)
-                doneFun()
-            }) {
-                photoStorage.child(photoFileName)
-                    .delete()
-                    .addOnSuccessListener { successFun() }
-                    .addOnFailureListener {
-                        Log.e(TAG, "================= deletePhoto: Failure =================")
-                        Log.e(TAG, "Error deleting photo: $it")
+                else {
+                    authenticateAnonymously({
+                        photosCollection.document(photo.id).set(hashMapOf(
+                            "fileName" to photo.fileName,
+                            "url" to photo.url,
+                        ))
                         failFun(it)
-                    }
-                    .addOnCompleteListener {
-                        Firebase.auth.currentUser!!.delete()
                         doneFun()
+                    }) {
+                        photoStorage.child(photo.fileName)
+                            .delete()
+                            .addOnSuccessListener { successFun() }
+                            .addOnFailureListener {
+                                photosCollection.document(photo.id).set(hashMapOf(
+                                    "fileName" to photo.fileName,
+                                    "url" to photo.url,
+                                ))
+                                Log.e(TAG, "================= deletePhoto: Failure =================")
+                                Log.e(TAG, "Error deleting photo: $it")
+                                failFun(it)
+                            }
+                            .addOnCompleteListener {
+                                Firebase.auth.currentUser!!.delete()
+                                doneFun()
+                            }
                     }
+                }
             }
-        }
+            .addOnFailureListener {
+                Log.e(TAG, "================= deletePhoto: Failure =================")
+                Log.e(TAG, "Error deleting photo: $it")
+                failFun(it)
+            }
     }
 }

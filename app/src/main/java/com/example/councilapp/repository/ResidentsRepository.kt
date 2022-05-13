@@ -29,22 +29,23 @@ class ResidentsRepository {
     /**
      * @param[uid] should be a FirebaseUser uid.
      */
-    private fun addResident(
+    fun addResident(
         uid: String,
         firstName: String,
         lastName: String,
         emailAddress: String,
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: () -> Any = {},
     ) {
-        val newResident = hashMapOf(
+        wipFun()
+        residentsCollection.document(uid)
+            .set(hashMapOf(
             "firstName" to firstName,
             "lastName" to lastName,
             "emailAddress" to emailAddress,
-        )
-        residentsCollection.document(uid)
-            .set(newResident)
+            ))
             .addOnSuccessListener {
                 successFun()
             }
@@ -58,12 +59,14 @@ class ResidentsRepository {
             }
     }
 
-    private fun getResident(
+    fun getResident(
         uid: String,
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: (Resident) -> Any,
     ) {
+        wipFun()
         residentsCollection.document(uid)
             .get()
             .addOnSuccessListener {
@@ -84,11 +87,13 @@ class ResidentsRepository {
             }
     }
 
-    private fun getAllResidents(
+    fun getAllResidents(
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: (List<Resident>) -> Any,
     ) {
+        wipFun()
         residentsCollection.get()
             .addOnSuccessListener {
                 for (document in it) {
@@ -109,12 +114,14 @@ class ResidentsRepository {
             }
     }
 
-    private fun deleteResident(
+    fun deleteResident(
         uid: String,
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: () -> Any = {},
     ) {
+        wipFun()
         residentsCollection.document(uid)
             .delete()
             .addOnSuccessListener {
@@ -130,14 +137,16 @@ class ResidentsRepository {
             }
     }
 
-    private fun updateResident(
+    fun updateResident(
         uid: String,
         fieldName: String,
         newValue: String,
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: () -> Any = {},
     ) {
+        wipFun()
         residentsCollection.document(uid)
             .update(fieldName, newValue)
             .addOnSuccessListener {

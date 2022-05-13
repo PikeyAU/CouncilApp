@@ -2,7 +2,6 @@ package com.example.councilapp.repository
 
 import android.util.Log
 import com.example.councilapp.model.Admin
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -13,36 +12,26 @@ class AdminsRepository {
     private var admins = mutableListOf<Admin>()
 
     init {
-        /*
-         */
-        val auth = Firebase.auth
-        auth.signInAnonymously().addOnSuccessListener {
-            addAdmin(firstName = "Tim", lastName = "Baker", uid = auth.currentUser!!.uid)
-        }.addOnCompleteListener {
-            auth.currentUser!!.delete()
-        }
-        getAllAdmins {
-            Log.v(TAG, it.toString())
-        }
     }
 
     /**
      * @param[uid] should be a FirebaseUser uid.
      */
-    private fun addAdmin(
+    fun addAdmin(
         uid: String,
         firstName: String,
         lastName: String,
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: () -> Any = {},
     ) {
-        val newAdmin = hashMapOf(
+        wipFun()
+        adminsCollection.document(uid)
+            .set(hashMapOf(
             "firstName" to firstName,
             "lastName" to lastName,
-        )
-        adminsCollection.document(uid)
-            .set(newAdmin)
+            ))
             .addOnSuccessListener {
                 successFun()
             }
@@ -56,12 +45,14 @@ class AdminsRepository {
             }
     }
 
-    private fun getAdmin(
+    fun getAdmin(
         uid: String,
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: (Admin) -> Any,
     ) {
+        wipFun()
         adminsCollection.document(uid)
             .get()
             .addOnSuccessListener {
@@ -81,11 +72,13 @@ class AdminsRepository {
             }
     }
 
-    private fun getAllAdmins(
+    fun getAllAdmins(
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: (List<Admin>) -> Any,
     ) {
+        wipFun()
         adminsCollection.get()
             .addOnSuccessListener {
                 for (document in it) {
@@ -105,12 +98,14 @@ class AdminsRepository {
             }
     }
 
-    private fun deleteAdmin(
+    fun deleteAdmin(
         uid: String,
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: () -> Any = {},
     ) {
+        wipFun()
         adminsCollection.document(uid)
             .delete()
             .addOnSuccessListener {
