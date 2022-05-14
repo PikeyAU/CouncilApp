@@ -9,14 +9,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CouncilApp">
         <activity
-            android:name=".RepositoryExampleActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".RegisterActivity2"
             android:exported="false" />
         <activity
