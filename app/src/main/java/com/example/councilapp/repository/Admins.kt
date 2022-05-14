@@ -7,20 +7,22 @@ import com.google.firebase.ktx.Firebase
 
 private const val TAG = "AdminsRepository"
 
-class AdminsRepository {
+object Admins {
     private val adminsCollection = Firebase.firestore.collection("admins")
     private var admins = mutableListOf<Admin>()
-
-    init {
-    }
 
     /**
      * @param[uid] should be a FirebaseUser uid.
      */
     fun addAdmin(
         uid: String,
-        firstName: String,
-        lastName: String,
+        fullName: String,
+        dateOfBirth: String? = null,
+        phoneNumber: String? = null,
+        address: String? = null,
+        city: String? = null,
+        state: String? = null,
+        postcode: String? = null,
         wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
@@ -29,8 +31,13 @@ class AdminsRepository {
         wipFun()
         adminsCollection.document(uid)
             .set(hashMapOf(
-            "firstName" to firstName,
-            "lastName" to lastName,
+                "fullName" to fullName,
+                "date of birth" to dateOfBirth,
+                "phone number" to phoneNumber,
+                "address" to address,
+                "city" to city,
+                "state" to state,
+                "postcode" to postcode,
             ))
             .addOnSuccessListener {
                 successFun()
@@ -58,8 +65,13 @@ class AdminsRepository {
             .addOnSuccessListener {
                 successFun(Admin(
                     uid = it.id,
-                    firstName = it.get("firstName") as String,
-                    lastName = it.get("lastName") as String,
+                    fullName = it.get("fullName") as String,
+                    dateOfBirth = it.get("date of birth") as String?,
+                    phoneNumber = it.get("phone number") as String?,
+                    address = it.get("address") as String?,
+                    city = it.get("city") as String?,
+                    state = it.get("state") as String?,
+                    postcode = it.get("postcode") as String?,
                 ))
             }
             .addOnFailureListener {
@@ -84,8 +96,13 @@ class AdminsRepository {
                 for (document in it) {
                     admins.add(Admin(
                         uid = document.id,
-                        firstName = document.get("firstName") as String,
-                        lastName = document.get("lastName") as String
+                        fullName = document.get("fullName") as String,
+                        dateOfBirth = document.get("date of birth") as String?,
+                        phoneNumber = document.get("phone number") as String?,
+                        address = document.get("address") as String?,
+                        city = document.get("city") as String?,
+                        state = document.get("state") as String?,
+                        postcode = document.get("postcode") as String?,
                     ))
                 }
                 successFun(admins)

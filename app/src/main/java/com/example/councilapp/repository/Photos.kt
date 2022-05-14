@@ -3,6 +3,7 @@ package com.example.councilapp.repository
 import android.net.Uri
 import android.util.Log
 import com.example.councilapp.model.Photo
+import com.example.councilapp.repository.Photos.photos
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -11,14 +12,10 @@ import java.io.File
 
 private const val TAG = "PhotosRepository"
 
-class PhotosRepository() {
+object Photos {
     private val photoStorage = Firebase.storage.reference.child("photos")
     private val reportsCollection = Firebase.firestore.collection("reports")
     var photos = mutableListOf<Photo>()
-
-    init {
-
-    }
 
     private fun authenticateAnonymously(
         failFun: (Exception) -> Any = {},
@@ -68,7 +65,7 @@ class PhotosRepository() {
         wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
-        successFun: () -> Any = {},
+        successFun: (String) -> Any = {},
     ) {
         wipFun()
         val photoFile = File(filePath)
@@ -93,7 +90,7 @@ class PhotosRepository() {
                         "fileName" to photoFileName,
                         "url" to url.toString()
                     ))
-                    .addOnSuccessListener { successFun() }
+                    .addOnSuccessListener { successFun(photoId) }
                     .addOnFailureListener {
                         Log.e(TAG, "================= addPhoto: failed =================")
                         Log.e(TAG, "Error adding photo: $it")
@@ -122,7 +119,7 @@ class PhotosRepository() {
                             "fileName" to photoFileName,
                             "url" to url.toString()
                         ))
-                        .addOnSuccessListener { successFun() }
+                        .addOnSuccessListener { successFun(photoId) }
                         .addOnFailureListener {
                             Log.e(TAG, "================= addPhoto: failed =================")
                             Log.e(TAG, "Error adding photo: $it")
@@ -137,9 +134,33 @@ class PhotosRepository() {
         }
     }
 
-    fun getReportPhotos(
+    fun getPhoto(
         reportRef: String,
-        wipFun: () -> Any,
+        photoId: String,
+        wipFun: () -> Any = {},
+        failFun: (Exception) -> Any = {},
+        doneFun: () -> Any = {},
+        successFun: (Photo) -> Any = {},
+    ) {
+        wipFun();
+        reportsCollection.document("$reportRef/photos/$photoId")
+            .get()
+            .addOnSuccessListener {
+                    successFun(Photo(
+                        it.id,
+                        it.get("fileName") as String,
+                        it.get("url") as String,
+                    ))
+            }.addOnFailureListener {
+                Log.e(TAG, "================= getReportPhotos: Failure =================")
+                Log.e(TAG, "Error obtaining report photos: $it")
+                failFun(it)
+            }.addOnCompleteListener { doneFun() }
+    }
+
+    fun getReportAllPhotos(
+        reportRef: String,
+        wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: (List<Photo>) -> Any,
@@ -165,64 +186,44 @@ class PhotosRepository() {
 
     fun deletePhoto (
         reportRef: String,
-        photo: Photo,
+        photoId: String,
         wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
         successFun: () -> Any = {},
     ) {
         wipFun()
-        val photosCollection = reportsCollection.document(reportRef).collection("photos")
-        photosCollection.document(photo.id)
-            .delete()
-            .addOnSuccessListener {
-                if(Firebase.auth.currentUser != null){
-                    photoStorage.child(photo.fileName)
-                        .delete()
-                        .addOnSuccessListener { successFun() }
-                        .addOnFailureListener {
-                            photosCollection.document(photo.id).set(hashMapOf(
-                                "fileName" to photo.fileName,
-                                "url" to photo.url,
-                            ))
-                            Log.e(TAG, "================= deletePhoto: Failure =================")
-                            Log.e(TAG, "Error deleting photo: $it")
-                            failFun(it)
-                        }
-                        .addOnCompleteListener { doneFun() }
-                }
-                else {
-                    authenticateAnonymously({
-                        photosCollection.document(photo.id).set(hashMapOf(
-                            "fileName" to photo.fileName,
-                            "url" to photo.url,
-                        ))
-                        failFun(it)
-                        doneFun()
-                    }) {
-                        photoStorage.child(photo.fileName)
-                            .delete()
-                            .addOnSuccessListener { successFun() }
-                            .addOnFailureListener {
-                                photosCollection.document(photo.id).set(hashMapOf(
-                                    "fileName" to photo.fileName,
-                                    "url" to photo.url,
-                                ))
-                                Log.e(TAG, "================= deletePhoto: Failure =================")
-                                Log.e(TAG, "Error deleting photo: $it")
-                                failFun(it)
-                            }
-                            .addOnCompleteListener {
-                                Firebase.auth.currentUser!!.delete()
-                                doneFun()
-                            }
-                    }
-                }
-            }
-            .addOnFailureListener {
+        getPhoto(
+            reportRef,
+            photoId,
+            failFun = {
                 Log.e(TAG, "================= deletePhoto: Failure =================")
                 Log.e(TAG, "Error deleting photo: $it")
                 failFun(it)
+                doneFun()
             }
+        ) { photo ->
+            reportsCollection.document("$reportRef/photos/${photo.id}")
+                .delete()
+                .addOnSuccessListener {
+                    if(Firebase.auth.currentUser != null){
+                        photoStorage.child(photo.fileName).delete()
+                    }
+                    else {
+                        authenticateAnonymously {
+                            photoStorage.child(photo.fileName)
+                                .delete()
+                                .addOnCompleteListener { Firebase.auth.currentUser!!.delete() }
+                        }
+                    }
+                    successFun()
+                }
+                .addOnFailureListener {
+                    Log.e(TAG, "================= deletePhoto: Failure =================")
+                    Log.e(TAG, "Error deleting photo: $it")
+                    failFun(it)
+                }
+                .addOnCompleteListener { doneFun() }
+        }
     }
 }

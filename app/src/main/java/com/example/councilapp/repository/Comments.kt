@@ -2,6 +2,7 @@ package com.example.councilapp.repository
 
 import android.util.Log
 import com.example.councilapp.model.Comment
+import com.example.councilapp.repository.Comments.comments
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
@@ -10,33 +11,30 @@ import java.util.*
 
 private const val TAG = "CommentsRepository"
 
-class CommentsRepository {
+object Comments{
     private val reportsCollection = Firebase.firestore.collection("reports")
     var comments = mutableListOf<Comment>()
-
-    init {
-
-    }
 
     fun addComment(
         reportRef: String,
         reportStatus: String,
-        commenter: DocumentReference,
+        commenterUid: String,
         commentText: String,
         wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
-        successFun: () -> Any = {},
+        successFun: (String) -> Any = {},
     ) {
         wipFun()
-        reportsCollection.document(reportRef).collection("comments")
-            .add(hashMapOf(
-                "commenter" to commenter,
+        val newCommentDoc = reportsCollection.document(reportRef).collection("comments").document()
+        newCommentDoc
+            .set(hashMapOf(
+                "commenter" to commenterUid,
                 "commentDate" to Timestamp(Date()),
                 "forReportStatus" to reportStatus,
                 "commentText" to commentText,
             ))
-            .addOnSuccessListener { successFun() }
+            .addOnSuccessListener { successFun(newCommentDoc.id) }
             .addOnFailureListener {
                 Log.e(TAG, "================= addComment: failed =================")
                 Log.e(TAG, "Error adding comment: $it")
@@ -45,7 +43,33 @@ class CommentsRepository {
             .addOnCompleteListener { doneFun() }
     }
 
-    fun getReportComments(
+    fun getComment(
+        reportRef: String,
+        commentId: String,
+        wipFun: () -> Any = {},
+        failFun: (Exception) -> Any = {},
+        doneFun: () -> Any = {},
+        successFun: (Comment) -> Any = {},
+    ) {
+        wipFun()
+        reportsCollection.document("$reportRef/comments/$commentId")
+            .get()
+            .addOnSuccessListener {
+                successFun(Comment(
+                    it.id,
+                    it.get("commenter") as String,
+                    it.get("commentDate") as Timestamp,
+                    it.get("forReportStatus") as String,
+                    it.get("commentText") as String,
+                ))
+            }.addOnFailureListener {
+                Log.e(TAG, "================= getReportComments: Failure =================")
+                Log.e(TAG, "Error obtaining report comments: $it")
+                failFun(it)
+            }.addOnCompleteListener { doneFun() }
+    }
+
+    fun getReportAllComments(
         reportRef: String,
         wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
@@ -59,7 +83,7 @@ class CommentsRepository {
                 for (document in it) {
                     comments.add(Comment(
                         document.id,
-                        document.get("commenter") as DocumentReference,
+                        document.get("commenter") as String,
                         document.get("commentDate") as Timestamp,
                         document.get("forReportStatus") as String,
                         document.get("commentText") as String,

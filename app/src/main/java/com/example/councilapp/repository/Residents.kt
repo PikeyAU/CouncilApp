@@ -8,32 +8,23 @@ import com.google.firebase.ktx.Firebase
 
 private const val TAG = "ResidentsRepository"
 
-class ResidentsRepository {
+object Residents{
     private val residentsCollection = Firebase.firestore.collection("residents")
     private var residents = mutableListOf<Resident>()
-
-    init {
-        /*
-         */
-        val auth = Firebase.auth
-        auth.signInAnonymously().addOnSuccessListener {
-            addResident(firstName = "Tim", lastName = "Baker", emailAddress="tim.baker@fake.email.io", uid = auth.currentUser!!.uid)
-        }.addOnCompleteListener {
-            auth.currentUser!!.delete()
-        }
-        getAllResidents {
-            Log.v(TAG, it.toString())
-        }
-    }
 
     /**
      * @param[uid] should be a FirebaseUser uid.
      */
     fun addResident(
         uid: String,
-        firstName: String,
-        lastName: String,
-        emailAddress: String,
+        fullName: String,
+        dateOfBirth: String? = null,
+        phoneNumber: String? = null,
+        address: String? = null,
+        city: String? = null,
+        state: String? = null,
+        postcode: String? = null,
+        emailAddress: String? = null,
         wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
@@ -42,9 +33,14 @@ class ResidentsRepository {
         wipFun()
         residentsCollection.document(uid)
             .set(hashMapOf(
-            "firstName" to firstName,
-            "lastName" to lastName,
-            "emailAddress" to emailAddress,
+                "fullName" to fullName,
+                "date of birth" to dateOfBirth,
+                "phone number" to phoneNumber,
+                "address" to address,
+                "city" to city,
+                "state" to state,
+                "postcode" to postcode,
+                "emailAddress" to emailAddress,
             ))
             .addOnSuccessListener {
                 successFun()
@@ -72,9 +68,14 @@ class ResidentsRepository {
             .addOnSuccessListener {
                 successFun(Resident(
                     uid = it.id,
-                    firstName = it.get("firstName") as String,
-                    lastName = it.get("lastName") as String,
-                    emailAddress = it.get("emailAddress") as String,
+                    fullName = it.get("fullName") as String,
+                    dateOfBirth = it.get("date of birth") as String?,
+                    phoneNumber = it.get("phone number") as String?,
+                    address = it.get("address") as String?,
+                    city = it.get("city") as String?,
+                    state = it.get("state") as String?,
+                    postcode = it.get("postcode") as String?,
+                    emailAddress = it.get("emailAddress") as String?,
                 ))
             }
             .addOnFailureListener {
@@ -99,9 +100,14 @@ class ResidentsRepository {
                 for (document in it) {
                     residents.add(Resident(
                         uid = document.id,
-                        firstName = document.get("firstName") as String,
-                        lastName = document.get("lastName") as String,
-                        emailAddress = document.get("emailAddress") as String,
+                        fullName = document.get("fullName") as String,
+                        dateOfBirth = document.get("date of birth") as String?,
+                        phoneNumber = document.get("phone number") as String?,
+                        address = document.get("address") as String?,
+                        city = document.get("city") as String?,
+                        state = document.get("state") as String?,
+                        postcode = document.get("postcode") as String?,
+                        emailAddress = document.get("emailAddress") as String?,
                     ))
                 }
                 successFun(residents)
@@ -137,6 +143,7 @@ class ResidentsRepository {
             }
     }
 
+    /* I don't think this is needed for this school project.
     fun updateResident(
         uid: String,
         fieldName: String,
@@ -161,4 +168,5 @@ class ResidentsRepository {
                 doneFun()
             }
     }
+     */
 }

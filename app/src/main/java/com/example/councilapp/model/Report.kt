@@ -9,9 +9,7 @@ data class Report(
     val reportRef: String,
     val reportDate: Timestamp,
     val location: GeoPoint,
-    val reportedBy: DocumentReference,
-    val responsibleAdmin: DocumentReference,
+    val reportedByUid: String,
+    val responsibleAdminUid: String?,
     val reportStatus: String,
-    val photos: CollectionReference,
-    val comments: CollectionReference,
 )

@@ -11,13 +11,11 @@ import java.util.*
 
 private const val TAG = "ReportsRepository"
 
-class ReportsRepository {
+object Reports{
     private val reportsCollection = Firebase.firestore.collection("reports")
+    private val residentsCollection = Firebase.firestore.collection("residents")
     private val reportCountDocument = Firebase.firestore.collection("global").document("report_count")
     private var reports = mutableListOf<Report>()
-
-    init {
-    }
 
     private fun increaseReportCount(
         failFun: (Exception) -> Any = {},
@@ -26,7 +24,7 @@ class ReportsRepository {
         reportCountDocument
             .get()
             .addOnSuccessListener {
-                val newReportCount = it.get("currentCount") as Int + 1
+                val newReportCount = (it.get("currentCount") as Long).toInt() + 1
                 reportCountDocument
                     .set(hashMapOf("currentCount" to newReportCount))
                     .addOnSuccessListener { successFun(newReportCount) }
@@ -40,9 +38,8 @@ class ReportsRepository {
 
     fun addReport(
         location: GeoPoint,
-        reportedBy: String,
-        responsibleAdmin: DocumentReference,
-        reportStatus: DocumentReference,
+        reportedByUid: String,
+        reportStatus:  String,
         wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
@@ -60,8 +57,7 @@ class ReportsRepository {
                 .set(hashMapOf(
                     "reportDate" to Timestamp(Date()),
                     "location" to location,
-                    "reportedBy" to reportedBy,
-                    "responsibleAdmin" to responsibleAdmin,
+                    "reportedBy" to reportedByUid,
                     "status" to reportStatus,
                 ))
                 .addOnSuccessListener { successFun(reportRef) }
@@ -72,6 +68,46 @@ class ReportsRepository {
                 }
                 .addOnCompleteListener { doneFun() }
         }
+    }
+
+    fun changeReportAdmin(
+        reportRef: String,
+        adminUid: String,
+        wipFun: () -> Any = {},
+        failFun: (Exception) -> Any = {},
+        doneFun: () -> Any = {},
+        successFun: () -> Any = {},
+    ) {
+        wipFun()
+        reportsCollection.document(reportRef)
+            .update("responsibleAdmin", adminUid)
+            .addOnSuccessListener { successFun() }
+            .addOnFailureListener {
+                Log.e(TAG, "================= changeReportAdmin: failed =================")
+                Log.e(TAG, "Error changing report admin:$it")
+                failFun(it)
+            }
+            .addOnCompleteListener { doneFun() }
+    }
+
+    fun changeReportStatus(
+        reportRef: String,
+        newStatus: String,
+        wipFun: () -> Any = {},
+        failFun: (Exception) -> Any = {},
+        doneFun: () -> Any = {},
+        successFun: () -> Any = {},
+    ) {
+        wipFun()
+        reportsCollection.document(reportRef)
+            .update("status", newStatus)
+            .addOnSuccessListener { successFun() }
+            .addOnFailureListener {
+                Log.e(TAG, "================= changeReportStatus: failed =================")
+                Log.e(TAG, "Error changing report status:$it")
+                failFun(it)
+            }
+            .addOnCompleteListener { doneFun() }
     }
 
     fun getReport(
@@ -89,11 +125,9 @@ class ReportsRepository {
                     reportRef = it.id,
                     reportDate = it.get("reportDate") as Timestamp,
                     location = it.get("location") as GeoPoint,
-                    reportedBy = it.get("reportedBy") as DocumentReference,
-                    responsibleAdmin = it.get("responsibleAdmin") as DocumentReference,
-                    reportStatus = it.get("reportStatus") as String,
-                    photos = reportDoc.collection("photos"),
-                    comments = reportDoc.collection("comments"),
+                    reportedByUid = it.get("reportedBy") as String,
+                    responsibleAdminUid = it.get("responsibleAdmin") as String?,
+                    reportStatus = it.get("status") as String,
                 ))
             }
             .addOnFailureListener {
@@ -118,11 +152,9 @@ class ReportsRepository {
                         reportRef = document.id,
                         reportDate = document.get("reportDate") as Timestamp,
                         location = document.get("location") as GeoPoint,
-                        reportedBy = document.get("reportedBy") as DocumentReference,
-                        responsibleAdmin = document.get("responsibleAdmin") as DocumentReference,
-                        reportStatus = document.get("reportStatus") as String,
-                        photos = reportsCollection.document(document.id).collection("photos"),
-                        comments = reportsCollection.document(document.id).collection("comments"),
+                        reportedByUid = document.get("reportedBy") as String,
+                        responsibleAdminUid = document.get("responsibleAdmin") as String?,
+                        reportStatus = document.get("status") as String,
                     ))
                 }
                 successFun(reports)
