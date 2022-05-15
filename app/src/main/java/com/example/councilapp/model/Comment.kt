@@ -1,12 +1,12 @@
 package com.example.councilapp.model
 
-import com.squareup.moshi.Json
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentReference
 
 data class Comment(
-    @Json(name = "_id") val id: String,
-    val commenter: String,
-    val commentDate: String,
+    val id: String,
+    val commenterUid: String,
+    val commentDate: Timestamp,
     val forReportStatus: String,
-    val isInternal: String,
-    val content: String,
+    val commentText: String,
 )

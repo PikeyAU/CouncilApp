@@ -1,12 +1,15 @@
 package com.example.councilapp.model
 
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.GeoPoint
+
 data class Report(
-    val refNum: String,
-    val reportDate: String,
-    val location: String,
-    val reportedBy: String,
-    val responsibleAdmin: String,
-    val status: String,
-    val photos: String,
-    val comments: String,
+    val reportRef: String,
+    val reportDate: Timestamp,
+    val location: GeoPoint,
+    val reportedByUid: String,
+    val responsibleAdminUid: String?,
+    val reportStatus: String,
 )
