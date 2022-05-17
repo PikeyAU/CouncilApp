@@ -7,11 +7,8 @@ import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import org.w3c.dom.Text
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +16,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         val btn_register = findViewById<Button>(R.id.btn_register)
-        val registerEmail = findViewById<EditText>(R.id.registerEmail)
+        val registerEmail = findViewById<EditText>(R.id.registerAge)
         val password = findViewById<EditText>(R.id.registerPassword)
         val confirmPassword = findViewById<EditText>(R.id.registerCPassword)
         val username = findViewById<EditText>(R.id.registerUsername)
@@ -75,7 +72,7 @@ class RegisterActivity : AppCompatActivity() {
                         ).show()
 
                         val intent =
-                            Intent(this@RegisterActivity, MainActivity::class.java )
+                            Intent(this@RegisterActivity, RegisterActivity2::class.java )
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         intent.putExtra("user_id", firebaseUser.uid)
                         intent.putExtra("email_id", email)
