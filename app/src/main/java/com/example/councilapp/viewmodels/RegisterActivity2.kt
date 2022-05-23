@@ -28,9 +28,15 @@ class RegisterActivity2 : AppCompatActivity() {
         val registerstate = findViewById<EditText>(R.id.registerState)
         val registerpostcode = findViewById<EditText>(R.id.registerPostcode)
         val registerphone = findViewById<EditText>(R.id.registerPhone)
+        val namepattern = Regex("/^[a-z ,.'-]+\$/i")
+        val alphapattern = Regex("/^[A-Za-z]+\$/")
+        val numpattern = Regex("/^100|[1-9]?\\d\$/")
+        val addresspattern = Regex("/^[#.0-9a-zA-Z\\s,-\\/]+(Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St)\$/gm")
+
 
         continueBtn.setOnClickListener {
             when {
+                //Fullname
                 TextUtils.isEmpty(registerfullname.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@RegisterActivity2,
@@ -39,6 +45,15 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+                !(registerfullname.text.toString()).matches(namepattern) -> {
+                    Toast.makeText(
+                        this@RegisterActivity2,
+                        "Name can only have alphanumeric characters and hyphens",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                //Age
                 TextUtils.isEmpty(registerage.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@RegisterActivity2,
@@ -47,6 +62,15 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+                !(registerage.text.toString()).matches(numpattern) -> {
+                    Toast.makeText(
+                        this@RegisterActivity2,
+                        "Age can only be a number",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                //Address
                 TextUtils.isEmpty(registeraddress.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@RegisterActivity2,
@@ -55,6 +79,15 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+                !(registeraddress.text.toString()).matches(addresspattern) -> {
+                    Toast.makeText(
+                        this@RegisterActivity2,
+                        "Please check your address and include either Ave, Dr, Rd, Blvd, Ln, or St",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                //City
                 TextUtils.isEmpty(registercity.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@RegisterActivity2,
@@ -63,6 +96,15 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+                !(registercity.text.toString()).matches(alphapattern) -> {
+                    Toast.makeText(
+                        this@RegisterActivity2,
+                        "City can only be in alphabets",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                //State
                 TextUtils.isEmpty(registerstate.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@RegisterActivity2,
@@ -71,6 +113,15 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+                !(registerstate.text.toString()).matches(alphapattern) -> {
+                    Toast.makeText(
+                        this@RegisterActivity2,
+                        "State can only be in alphabets",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                //Post code
                 TextUtils.isEmpty(registerpostcode.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@RegisterActivity2,
@@ -79,10 +130,27 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+                !(registerpostcode.text.toString()).matches(numpattern) -> {
+                    Toast.makeText(
+                        this@RegisterActivity2,
+                        "Post code can only be a number",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                //Phone number
                 TextUtils.isEmpty(registerphone.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@RegisterActivity2,
                         "Please Enter a Phone Number.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                !(registerphone.text.toString()).matches(numpattern) -> {
+                    Toast.makeText(
+                        this@RegisterActivity2,
+                        "Phone number can only be a number",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

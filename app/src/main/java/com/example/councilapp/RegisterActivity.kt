@@ -4,11 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,9 +23,11 @@ class RegisterActivity : AppCompatActivity() {
         val confirmPassword = findViewById<EditText>(R.id.registerCPassword)
         val username = findViewById<EditText>(R.id.registerUsername)
         val btn_login = findViewById<Button>(R.id.loginBtn)
+        var upattern = Regex("^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]\$")
 
         btn_register.setOnClickListener {
             when {
+                //Email
                 TextUtils.isEmpty(registerEmail.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@RegisterActivity,
@@ -32,6 +36,15 @@ class RegisterActivity : AppCompatActivity() {
                     ).show()
                 }
 
+                !Patterns.EMAIL_ADDRESS.matcher(registerEmail.text.toString()).matches() -> {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Please Enter Valid Email Address.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                //Password and Confirm password
                 TextUtils.isEmpty(password.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@RegisterActivity,
@@ -48,6 +61,15 @@ class RegisterActivity : AppCompatActivity() {
                     ).show()
                 }
 
+                (password.text.toString()) != (confirmPassword.text.toString()) -> {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Password Does Not Match.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                //Username
                 TextUtils.isEmpty(username.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@RegisterActivity,
@@ -55,6 +77,19 @@ class RegisterActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+
+                !(username.text.toString()).matches(upattern) -> {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Username must only consist of :" +
+                                "lower and upper alphanumeric characters," +
+                                "optional (.),(_), and (-) characters," +
+                                "optional characters cannot be the first or last character," +
+                                "between 5 to 20 characters.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
 
             else -> {
                 val email: String = registerEmail.text.toString().trim { it <= ' '}
@@ -89,6 +124,8 @@ class RegisterActivity : AppCompatActivity() {
 
             }
             }
+
+
 
         }
 
