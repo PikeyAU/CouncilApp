@@ -1,21 +1,17 @@
 package com.example.councilapp
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import android.provider.MediaStore
 
-class ReportCreatingActivity : AppCompatActivity() {
+class CreatingReportActivity : AppCompatActivity() {
     lateinit var button: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +40,7 @@ class ReportCreatingActivity : AppCompatActivity() {
             when {
                 TextUtils.isEmpty(reportLocation.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
-                        this@ReportCreatingActivity,
+                        this@CreatingReportActivity,
                         "Please enter asset location",
                         Toast.LENGTH_LONG
                     ).show()
@@ -52,7 +48,7 @@ class ReportCreatingActivity : AppCompatActivity() {
 
                 TextUtils.isEmpty(assetType.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
-                        this@ReportCreatingActivity,
+                        this@CreatingReportActivity,
                         "Please enter type of asset here",
                         Toast.LENGTH_LONG
                     ).show()
@@ -60,7 +56,7 @@ class ReportCreatingActivity : AppCompatActivity() {
 
                 TextUtils.isEmpty(note.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
-                        this@ReportCreatingActivity,
+                        this@CreatingReportActivity,
                         "Please enter your notes here",
                         Toast.LENGTH_LONG
                     ).show()
@@ -70,7 +66,7 @@ class ReportCreatingActivity : AppCompatActivity() {
                 else -> {
 
                     Toast.makeText(
-                        this@ReportCreatingActivity,
+                        this@CreatingReportActivity,
                         "Report Has Been Successfully Added",
                         Toast.LENGTH_LONG
                     ).show()
@@ -83,7 +79,7 @@ class ReportCreatingActivity : AppCompatActivity() {
         }
 
         btnCancel.setOnClickListener{
-            startActivity(Intent(this@ReportCreatingActivity, ReportCreatingActivity::class.java))
+            startActivity(Intent(this@CreatingReportActivity, CreatingReportActivity::class.java))
         }
     }
 }
