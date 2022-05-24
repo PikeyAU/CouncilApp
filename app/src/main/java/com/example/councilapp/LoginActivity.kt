@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import okhttp3.internal.userAgent
 
 
 class LoginActivity : AppCompatActivity() {
@@ -23,6 +24,9 @@ class LoginActivity : AppCompatActivity() {
         val loginBtn = findViewById<Button>(R.id.loginBtn)
         val email = findViewById<EditText>(R.id.loginEmail)
         val password = findViewById<EditText>(R.id.loginPassword)
+
+
+        //checkIfUserIsLogged()
 
 
         register_tv.setOnClickListener{
@@ -85,6 +89,15 @@ class LoginActivity : AppCompatActivity() {
         }
 
         }
+        /*
+        private fun checkIfUserIsLogged() {
+
+            if (user.currentUser !=null){
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+        }*/
+
     }
 
 
