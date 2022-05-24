@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/dashboard"
+        android:title="DashBoard"
+        android:icon="@drawable/ic_dasboard"/>
+
+    <item
+        android:id="@+id/reports"
+        android:title="Reports"
+        android:icon="@drawable/ic_reports"/>
+
+    <item
+        android:id="@+id/notifications"
+        android:title="Notifications"
+        android:icon="@drawable/ic_notifications"/>
+
+    <item
+        android:id="@+id/profile"
+        android:title="Profile"
+        android:icon="@drawable/ic_account"/>
+
+</menu>
