@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.councilapp.repository.Residents
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -96,6 +97,7 @@ class RegisterActivity2 : AppCompatActivity() {
                     val postcode: String = registerpostcode.text.toString().trim()
                     val phoneNumber: String = registerphone.text.toString().trim()
                     val userid : String = intent.getStringExtra("user_id").toString()
+                    val emailAddress : String = intent.getStringExtra("email").toString()
 
                     val user = hashMapOf<String, Any>(
                         "userid" to userid,
@@ -108,29 +110,9 @@ class RegisterActivity2 : AppCompatActivity() {
                         "phone number" to phoneNumber
 
                     )
-
-                    val fireStoreDatabase = FirebaseFirestore.getInstance()
-
-                    fireStoreDatabase.collection("users")
-                        .add(user)
-                        .addOnSuccessListener{
-                            Log.d(TAG, "Document added with ID ${it.id}")
-                            val intent =
-                                Intent(this@RegisterActivity2, MainActivity::class.java )
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            intent.putExtra("fullName", fullname)
-                            startActivity(intent)
-                            finish()
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.w(TAG, "Error adding document $exception")
-                            Toast.makeText(
-                                this@RegisterActivity2,
-                                exception.message.toString(),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
+                    Residents.addResident(userid, fullname, age, phoneNumber, address, city, state, postcode, emailAddress)
+                    val intent = Intent(this@RegisterActivity2, MainActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }

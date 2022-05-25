@@ -3,7 +3,6 @@ package com.example.councilapp.repository
 import android.util.Log
 import com.example.councilapp.model.Report
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -40,6 +39,8 @@ object Reports{
         location: GeoPoint,
         reportedByUid: String,
         reportStatus:  String,
+        assetType: String,
+        notes: String,
         wipFun: () -> Any = {},
         failFun: (Exception) -> Any = {},
         doneFun: () -> Any = {},
@@ -58,6 +59,8 @@ object Reports{
                     "reportDate" to Timestamp(Date()),
                     "location" to location,
                     "reportedBy" to reportedByUid,
+                    "assetType" to assetType,
+                    "notes" to notes,
                     "status" to reportStatus,
                 ))
                 .addOnSuccessListener { successFun(reportRef) }
@@ -125,6 +128,8 @@ object Reports{
                     reportRef = it.id,
                     reportDate = it.get("reportDate") as Timestamp,
                     location = it.get("location") as GeoPoint,
+                    assetType = it.get("assetType") as String,
+                    notes = it.get("notes") as String,
                     reportedByUid = it.get("reportedBy") as String,
                     responsibleAdminUid = it.get("responsibleAdmin") as String?,
                     reportStatus = it.get("status") as String,
@@ -155,6 +160,8 @@ object Reports{
                         reportedByUid = document.get("reportedBy") as String,
                         responsibleAdminUid = document.get("responsibleAdmin") as String?,
                         reportStatus = document.get("status") as String,
+                        assetType = document.get("assetType") as String,
+                        notes = document.get("notes") as String,
                     ))
                 }
                 successFun(reports)
@@ -190,3 +197,4 @@ object Reports{
             }
     }
 }
+
