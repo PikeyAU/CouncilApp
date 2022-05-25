@@ -336,6 +336,7 @@ class RepositoryExampleActivity : AppCompatActivity() {
         all the reports you've obtained from Firestore. */
             /* As an example, I'm logging the string representation of the obtained reports. */
             Log.i(TAG, "getAllReportsExample: Obtained all reports $allReports")
+
         }
 /*__________________________________________________________________________________________________
  *================================================================================================*/
