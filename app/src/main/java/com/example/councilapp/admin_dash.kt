@@ -1,8 +1,10 @@
 package com.example.councilapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.GridView
 import android.widget.TextView
 import com.example.councilapp.repository.Reports
@@ -16,6 +18,7 @@ class admin_dash : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_dash)
 
+        var reportBtn = findViewById<Button>(R.id.reportBtn)
         val fullName = intent.getStringExtra("user_name")
 
         var userName = findViewById<TextView>(R.id.welcometext)
@@ -28,6 +31,9 @@ class admin_dash : AppCompatActivity() {
         userName.text = "$fullName"
 
 
+        reportBtn.setOnClickListener {
+            startActivity(Intent(this@admin_dash, AdminReport::class.java))
+        }
     }
     private fun setDataList(): ArrayList<gridviewitem>? {
 

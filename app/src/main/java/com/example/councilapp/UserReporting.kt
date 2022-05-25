@@ -6,8 +6,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
@@ -18,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.councilapp.databinding.ActivityUserReportingBinding
-import com.example.councilapp.repository.Photos
 import com.example.councilapp.repository.Reports
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -38,7 +35,6 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationProvidedClient: FusedLocationProviderClient
     private lateinit var tvLat: TextView
     private lateinit var tvLong: TextView
-    private lateinit var path: String
 
 
     private fun getLocationAccess() {
@@ -130,21 +126,6 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun getPath(uri: Uri?): String? {
-        var cursor = contentResolver.query(uri!!, null, null, null, null)
-        cursor!!.moveToFirst()
-        var document_id = cursor.getString(0)
-        document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
-        cursor.close()
-        cursor = contentResolver.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            null, MediaStore.Images.Media._ID + " = ? ", arrayOf(document_id), null
-        )
-        cursor!!.moveToFirst()
-        val path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
-        cursor.close()
-        return path
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -188,11 +169,10 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
                         Toast.LENGTH_LONG
                     ).show()
                 }
-
                 TextUtils.isEmpty(assetType.text.toString().trim { it <= ' ' }) -> {
                     Toast.makeText(
                         this@UserReporting,
-                        "Please enter asset location",
+                        "Please enter your asset type here",
                         Toast.LENGTH_LONG
                     ).show()
                 }

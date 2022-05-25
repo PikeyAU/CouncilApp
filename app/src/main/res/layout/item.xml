@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="8dp"
+
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginHorizontal="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:orientation="vertical">
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="status:"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+
+            </TextView>
+            <TextView
+                android:id="@+id/inputStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="new"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+            </TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="assetType:"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+
+            </TextView>
+            <TextView
+                android:id="@+id/inputAssetType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sas"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+            </TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location:"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+
+            </TextView>
+            <TextView
+                android:id="@+id/inputLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24 power road"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+            </TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="reportDate:"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+
+            </TextView>
+            <TextView
+                android:id="@+id/inputReportDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10:20"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+            </TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="reportedBy:"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+
+            </TextView>
+            <TextView
+                android:id="@+id/inputReportedBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sadasdasdas"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+            </TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Note:"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+
+            </TextView>
+            <TextView
+                android:id="@+id/inputNotes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="serious"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold">
+            </TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>
