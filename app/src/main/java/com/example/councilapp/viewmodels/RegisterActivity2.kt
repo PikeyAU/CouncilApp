@@ -9,10 +9,12 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import android.util.Patterns
 
 class RegisterActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +23,7 @@ class RegisterActivity2 : AppCompatActivity() {
 
         val db = Firebase.firestore
         val continueBtn = findViewById<Button>(R.id.continueBtn)
+        val btn_back = findViewById<Button>(R.id.btn_back)
         val registerfullname = findViewById<EditText>(R.id.registerfullname)
         val registerage = findViewById<EditText>(R.id.registerAge)
         val registeraddress = findViewById<EditText>(R.id.registerAddress)
@@ -28,11 +31,18 @@ class RegisterActivity2 : AppCompatActivity() {
         val registerstate = findViewById<EditText>(R.id.registerState)
         val registerpostcode = findViewById<EditText>(R.id.registerPostcode)
         val registerphone = findViewById<EditText>(R.id.registerPhone)
+<<<<<<< Updated upstream
         val namepattern = Regex("/^[a-z ,.'-]+\$/i")
         val alphapattern = Regex("/^[A-Za-z]+\$/")
         val numpattern = Regex("/^100|[1-9]?\\d\$/")
         val addresspattern = Regex("/^[#.0-9a-zA-Z\\s,-\\/]+(Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St)\$/gm")
 
+=======
+        //var namepattern = ("/^[a-zA-Z._-]+\$/".toRegex())
+        var alphapattern = ("/^[A-Za-z]+\$/".toRegex())
+        var numpattern = ("/^100|[1-9]?\\d\$/".toRegex())
+        var addresspattern = ("/^[#.0-9a-zA-Z\\s,-\\/]+(Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St)\$/gm".toRegex())
+>>>>>>> Stashed changes
 
         continueBtn.setOnClickListener {
             when {
@@ -45,6 +55,7 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+<<<<<<< Updated upstream
                 !(registerfullname.text.toString()).matches(namepattern) -> {
                     Toast.makeText(
                         this@RegisterActivity2,
@@ -52,16 +63,26 @@ class RegisterActivity2 : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+=======
+                //!(namepattern.containsMatchIn(registerfullname.text.toString())) -> {
+                //    Toast.makeText(
+                //        this@RegisterActivity2,
+                //        "Name can only have alphanumeric characters and hyphens",
+               //         Toast.LENGTH_SHORT
+               //     ).show()
+               // }
+>>>>>>> Stashed changes
 
                 //Age
                 TextUtils.isEmpty(registerage.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
                         this@RegisterActivity2,
-                        "Please Enter Age.",
+                        "Please Enter Data of Birth.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
 
+<<<<<<< Updated upstream
                 !(registerage.text.toString()).matches(numpattern) -> {
                     Toast.makeText(
                         this@RegisterActivity2,
@@ -70,6 +91,8 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+=======
+>>>>>>> Stashed changes
                 //Address
                 TextUtils.isEmpty(registeraddress.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
@@ -79,7 +102,11 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+<<<<<<< Updated upstream
                 !(registeraddress.text.toString()).matches(addresspattern) -> {
+=======
+                !(addresspattern.containsMatchIn(registeraddress.text.toString())) -> {
+>>>>>>> Stashed changes
                     Toast.makeText(
                         this@RegisterActivity2,
                         "Please check your address and include either Ave, Dr, Rd, Blvd, Ln, or St",
@@ -96,7 +123,11 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+<<<<<<< Updated upstream
                 !(registercity.text.toString()).matches(alphapattern) -> {
+=======
+                !(alphapattern.containsMatchIn(registercity.text.toString())) -> {
+>>>>>>> Stashed changes
                     Toast.makeText(
                         this@RegisterActivity2,
                         "City can only be in alphabets",
@@ -113,7 +144,11 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+<<<<<<< Updated upstream
                 !(registerstate.text.toString()).matches(alphapattern) -> {
+=======
+                !(alphapattern.containsMatchIn(registerstate.text.toString())) -> {
+>>>>>>> Stashed changes
                     Toast.makeText(
                         this@RegisterActivity2,
                         "State can only be in alphabets",
@@ -130,7 +165,11 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+<<<<<<< Updated upstream
                 !(registerpostcode.text.toString()).matches(numpattern) -> {
+=======
+                !(numpattern.containsMatchIn(registerpostcode.text.toString())) -> {
+>>>>>>> Stashed changes
                     Toast.makeText(
                         this@RegisterActivity2,
                         "Post code can only be a number",
@@ -147,7 +186,11 @@ class RegisterActivity2 : AppCompatActivity() {
                     ).show()
                 }
 
+<<<<<<< Updated upstream
                 !(registerphone.text.toString()).matches(numpattern) -> {
+=======
+                !(numpattern.containsMatchIn(registerphone.text.toString())) -> {
+>>>>>>> Stashed changes
                     Toast.makeText(
                         this@RegisterActivity2,
                         "Phone number can only be a number",
@@ -201,6 +244,11 @@ class RegisterActivity2 : AppCompatActivity() {
 
                 }
             }
+        }
+
+        btn_back.setOnClickListener{
+
+            startActivity(Intent(this@RegisterActivity2, RegisterActivity::class.java))
         }
     }
 }
