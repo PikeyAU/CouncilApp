@@ -30,9 +30,9 @@
     <string name="images">Image:</string>
     <string name="upload_image">Upload image</string>
     <string name="situation">Status</string>
-    <string name="feedback">Feedback</string>
+    <string name="feedback">Description</string>
     <string name="time">Date of Submission</string>
-    <string name="location">Location</string>
+    <string name="location">Report Reference ID</string>
     <string name="track_your_reports">Track your reports</string>
     <string name="title_activity_user_report_maps">UserReportMaps</string>
     <string name="MAP_API_KEY">${MAPS_API_KEY}</string>

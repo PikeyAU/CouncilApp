@@ -22,7 +22,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.GeoPoint
 
 
@@ -130,6 +130,7 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         getCurrentLocation()
 
         binding = ActivityUserReportingBinding.inflate(layoutInflater)
@@ -217,6 +218,13 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
 
         trackBtn.setOnClickListener {
             startActivity(Intent(this@UserReporting, UserTracking::class.java))
+        }
+
+        binding.btnLog.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+
+            startActivity(Intent(this@UserReporting, LoginActivity::class.java))
+            finish()
         }
     }
 }

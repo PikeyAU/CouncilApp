@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20sp"
         android:textAlignment="viewStart"
-        android:textSize="30dp"
-        android:text="Admin Report"
-        ></TextView>
+        android:textSize="30sp"
+        android:text="Admin Report"/>
+
 
     <ImageView
         android:id="@+id/imageView1"
@@ -36,7 +36,6 @@
         android:layout_height="322dp"
 
         android:layout_marginBottom="200sp"
-        android:outlineSpotShadowColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteX="1dp"

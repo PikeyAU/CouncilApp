@@ -4,10 +4,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 class MyAdapter(private val userList:ArrayList<User>): RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
 
-
+    private fun timeToDate(time : String) : LocalDateTime? {
+        var time = time.toLong()
+        val date = LocalDateTime.ofInstant(Instant.ofEpochSecond(time), ZoneId.systemDefault())
+        return date
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter.MyViewHolder {
 
@@ -21,9 +28,9 @@ class MyAdapter(private val userList:ArrayList<User>): RecyclerView.Adapter<MyAd
 
         val user:User=userList[position]
 
-        holder.reportDate.text=user.reportDate
+        holder.reportDate.text= user.reportDate.toString()
         holder.asset.text=user.assetType
-        holder.location.text=user.location
+        holder.location.text=user.location.toString()
         holder.notes.text=user.notes
         holder.reportBy.text=user.reportBy
         holder.status.text=user.status

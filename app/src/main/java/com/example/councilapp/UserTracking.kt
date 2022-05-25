@@ -1,36 +1,36 @@
 package com.example.councilapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.councilapp.databinding.ActivityUserTrackingBinding
-import com.example.councilapp.repository.Reports
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.security.Timestamp
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UserTracking : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserTrackingBinding
+
+    private fun timeToDate(time : String) : LocalDateTime? {
+        var time = time.toLong()
+        val date = LocalDateTime.ofInstant(Instant.ofEpochSecond(time), ZoneId.systemDefault())
+        return date
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserTrackingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-        binding.btnRetrieve.setOnClickListener {
-
-            val user = FirebaseAuth.getInstance().currentUser
-            val uid = user?.uid
 
             val location_1 = findViewById<TextView>(R.id.textView11)
             val location_2 = findViewById<TextView>(R.id.textView21)
@@ -55,25 +55,54 @@ class UserTracking : AppCompatActivity() {
                 val user = FirebaseAuth.getInstance().currentUser
                 val uid = user?.uid
                 val reportRef = ArrayList<String>()
+                val reportDates = ArrayList<String>()
+                val reportStatus = ArrayList<String>()
+                val notes = ArrayList<String>()
 
 
                 db.collection("reports").get().addOnSuccessListener { result ->
+                    var counter = 0
+                    while(counter < 3){
                     for (document in result) {
                         Log.d(TAG, "${document.id} => ${document.get("reportedBy").toString()}")
                         if (document.get("reportedBy").toString() == uid) {
                             reportRef.add(document.id)
-
+                            reportDates.add(document.get("reportDate").toString())
+                            reportStatus.add(document.get("status").toString())
+                            notes.add(document.get("notes").toString())
+                            counter++
 
                         }
                     }
-                }
 
-                location_1.text = reportRef.getOrNull(0).toString()
-                location_2.text = reportRef.toString()
+                    location_1.text = reportRef[0]
+                    location_2.text = reportRef[1]
+                    location_3.text = reportRef[2]
+                    location_4.text = reportRef[3]
+                    date_1.text = timeToDate(reportDates[0].slice(18..27)).toString()
+                    date_2.text = timeToDate(reportDates[1].slice(18..27)).toString()
+                    date_3.text = timeToDate(reportDates[2].slice(18..27)).toString()
+                    date_4.text = timeToDate(reportDates[3].slice(18..27)).toString()
+                    status_1.text = reportStatus[0]
+                        status_2.text = reportStatus[1]
+                        status_3.text = reportStatus[2]
+                        status_4.text = reportStatus[3]
+                        feed_1.text = notes[0]
+                        feed_2.text = notes[1]
+                        feed_3.text = notes[2]
+                        feed_4.text = notes[3]
+
+
+                    }
+                }
             }
+
+        binding.btnHome.setOnClickListener{
+            startActivity(Intent(this@UserTracking, UserReporting::class.java))
+        }
+
         }
     }
-}
 
 
 

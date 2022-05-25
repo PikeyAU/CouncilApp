@@ -22,11 +22,32 @@ class RegisterActivity : AppCompatActivity() {
         val confirmPassword = findViewById<EditText>(R.id.registerCPassword)
         val username = findViewById<EditText>(R.id.registerUsername)
         val btn_login = findViewById<Button>(R.id.loginBtn)
-        var upattern = Regex("^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]\$")
+        val upattern = ("^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]\$".toRegex())
 
 
         btn_register.setOnClickListener {
             when {
+                //Username
+                TextUtils.isEmpty(username.text.toString().trim { it <= ' '}) -> {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Please Enter a Username.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                !(upattern.containsMatchIn(username.text.toString())) -> {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Username must only consist of:" +
+                                "lower and upper alphanumeric characters" +
+                                "optional(.),(_) and (-) characters," +
+                                "optional characters cannot be the first or last charachter," +
+                                "between 5 to 20 characters.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
                 //Email
                 TextUtils.isEmpty(registerEmail.text.toString().trim { it <= ' '}) -> {
                     Toast.makeText(
@@ -66,27 +87,6 @@ class RegisterActivity : AppCompatActivity() {
                         this@RegisterActivity,
                         "Password Does Not Match.",
                         Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                //Username
-                TextUtils.isEmpty(username.text.toString().trim { it <= ' '}) -> {
-                    Toast.makeText(
-                        this@RegisterActivity,
-                        "Please Enter a Username.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                !(username.text.toString()).matches(upattern) -> {
-                    Toast.makeText(
-                        this@RegisterActivity,
-                        "Username must only consist of :" +
-                                "lower and upper alphanumeric characters," +
-                                "optional (.),(_), and (-) characters," +
-                                "optional characters cannot be the first or last character," +
-                                "between 5 to 20 characters.",
-                        Toast.LENGTH_LONG
                     ).show()
                 }
 
