@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
                             ).show()
 
                             val intent =
-                                Intent(this@LoginActivity, MainActivity::class.java )
+                                Intent(this@LoginActivity, UserReporting::class.java )
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             intent.putExtra("user_id", FirebaseAuth.getInstance().currentUser!!.uid)
                             intent.putExtra("email_id", email)

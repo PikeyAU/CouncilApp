@@ -12,4 +12,6 @@ data class Report(
     val reportedByUid: String,
     val responsibleAdminUid: String?,
     val reportStatus: String,
+    val assetType: String,
+    val notes: String,
 )

@@ -17,7 +17,7 @@ import com.google.firebase.ktx.Firebase
 import io.grpc.Context
 import java.util.*
 
-private const val TAG = "REPOSITORIES_EXAMPLES"
+const val TAG = "REPOSITORIES_EXAMPLES"
 
 class RepositoryExampleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,6 +135,8 @@ class RepositoryExampleActivity : AppCompatActivity() {
             use a resident's actual UID. */
             reportStatus = "NEW", /* I'm passing in a string literal as an example. Ideally this
             should be a member of an Enum defined somewhere. */
+            assetType = "Rubbish Bin",
+            notes = "Notes",
             wipFun = { // Optional
                 Log.i(TAG, "addReportExample: Adding new report...")
             },
