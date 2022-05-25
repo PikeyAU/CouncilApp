@@ -33,7 +33,7 @@ class admin_dash : AppCompatActivity() {
 
 
         reportBtn.setOnClickListener {
-            startActivity(Intent(this@admin_dash, GetData::class.java))
+            startActivity(Intent(this@admin_dash, AdminReport::class.java))
         }
     }
     private fun setDataList(): ArrayList<gridviewitem>? {
