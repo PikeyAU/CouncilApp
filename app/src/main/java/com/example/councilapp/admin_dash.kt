@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.GridView
 import android.widget.TextView
 import com.example.councilapp.repository.Reports
+import com.example.myapplication.GetData
 
 class admin_dash : AppCompatActivity() {
     private var gridView: GridView?=null
@@ -32,7 +33,7 @@ class admin_dash : AppCompatActivity() {
 
 
         reportBtn.setOnClickListener {
-            startActivity(Intent(this@admin_dash, AdminReport::class.java))
+            startActivity(Intent(this@admin_dash, GetData::class.java))
         }
     }
     private fun setDataList(): ArrayList<gridviewitem>? {
