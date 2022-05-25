@@ -25,12 +25,13 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.GeoPoint
 
 
 class UserReporting : AppCompatActivity(), OnMapReadyCallback {
 
-    lateinit var ImageUri : Uri
+    lateinit var ImageUri: Uri
     private val LOCATION_PERMISSION_REQUEST = 1
     private lateinit var map: GoogleMap
     lateinit var binding: ActivityUserReportingBinding
@@ -41,22 +42,36 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
 
 
     private fun getLocationAccess() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             map.isMyLocationEnabled = true
-        }
-        else
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST)
+        } else
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST
+            )
     }
 
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST) {
             if (grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
                 map.isMyLocationEnabled = true
-            }
-            else {
-                Toast.makeText(this, "User has not granted location access permission", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "User has not granted location access permission",
+                    Toast.LENGTH_LONG
+                ).show()
                 finish()
             }
         }
@@ -72,26 +87,31 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
-    private fun getCurrentLocation(){
-        if(ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+    private fun getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             getLocationAccess()
             return
         }
         var fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        fusedLocationProviderClient.lastLocation.addOnCompleteListener(this){ task ->
-            val location: Location?=task.result
-            if (location==null){
+        fusedLocationProviderClient.lastLocation.addOnCompleteListener(this) { task ->
+            val location: Location? = task.result
+            if (location == null) {
                 Toast.makeText(this, "Null Received", Toast.LENGTH_SHORT).show()
             } else {
-                tvLat.text=""+location.latitude
-                tvLong.text=""+location.longitude
+                tvLat.text = "" + location.latitude
+                tvLong.text = "" + location.longitude
             }
         }
     }
 
-    private fun selectImage(){
+    private fun selectImage() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
@@ -102,7 +122,7 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == 100 && resultCode == RESULT_OK){
+        if (requestCode == 100 && resultCode == RESULT_OK) {
 
             ImageUri = data?.data!!
 
@@ -141,14 +161,15 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         val assetType = findViewById<EditText>(R.id.assetType)
-        val notes =  findViewById<EditText>(R.id.notes)
+        val notes = findViewById<EditText>(R.id.notes)
         val btnImage = findViewById<Button>(R.id.btn_image)
         val btnSubmit = findViewById<Button>(R.id.btn_submit)
         val btnCancel = findViewById<Button>(R.id.btn_cancel)
-
+        val trackBtn = findViewById<Button>(R.id.trackBtn)
 
         tvLat = findViewById<TextView>(R.id.reportLat)
         tvLong = findViewById<TextView>(R.id.reportLong)
+
 
 
         binding.btnImage.setOnClickListener {
@@ -160,7 +181,7 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
         btnSubmit.setOnClickListener {
             when {
 
-                TextUtils.isEmpty(notes.text.toString().trim { it <= ' '}) -> {
+                TextUtils.isEmpty(notes.text.toString().trim { it <= ' ' }) -> {
                     Toast.makeText(
                         this@UserReporting,
                         "Please enter your notes here",
@@ -168,7 +189,7 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
                     ).show()
                 }
 
-                TextUtils.isEmpty(assetType.text.toString().trim { it <= ' '}) -> {
+                TextUtils.isEmpty(assetType.text.toString().trim { it <= ' ' }) -> {
                     Toast.makeText(
                         this@UserReporting,
                         "Please enter asset location",
@@ -210,8 +231,12 @@ class UserReporting : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        btnCancel.setOnClickListener{
+        btnCancel.setOnClickListener {
             startActivity(Intent(this@UserReporting, UserReporting::class.java))
+        }
+
+        trackBtn.setOnClickListener {
+            startActivity(Intent(this@UserReporting, UserTracking::class.java))
         }
     }
 }
